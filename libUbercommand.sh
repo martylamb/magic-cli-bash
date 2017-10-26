@@ -3,7 +3,7 @@
 # A bash tool similar to Slack's magic-cli : A foundation for building
 # your own suite of command line tools.
 #
-# See https://github.com/martylamb/magic-cli-bash for more details
+# See https://github.com/martylamb/libUbercommand.sh for more details
 
 UBERCOMMAND_DESC=${UBERCOMMAND_DESC:-FIXME: set a description via the UBERCOMMAND_DESC variable}
 
