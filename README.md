@@ -1,4 +1,4 @@
-# magic-cli-bash
+# libUbercommand.sh
 A bash tool similar to Slack's [magic-cli](https://github.com/slackhq/magic-cli) : A foundation for building your own suite of command line tools.
 
 magic-cli-bash exists to make it easy to create a set of tools that work together. It's not a tool you use as-is; it's here to offer a starting point for your own custom command line tools.
