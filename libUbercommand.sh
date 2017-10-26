@@ -5,12 +5,12 @@
 #
 # See https://github.com/martylamb/magic-cli-bash for more details
 
-DESC="FIXME: Replace with a description of your ubercommand"
+UBERCOMMAND_DESC=${UBERCOMMAND_DESC:-FIXME: set a description via the UBERCOMMAND_DESC variable}
 
 # ----------------------------------------------------------------------
 
-DIRNAME=$( dirname "$0" )
-BASECMD=$( basename "$0" )
+UBER_DIRNAME=$( dirname "$0" )
+UBER_BASECMD=$( basename "$0" )
 
 # ----------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ BASECMD=$( basename "$0" )
 function usageTextOfScript() {
 	local BASESUBCMD="$( basename $1 )"
 	local USAGE=$( cat "$1" | egrep -i "# *usage: *" | sed -e 's/.*# *usage: *//I' )
-	printf "${BASECMD} %s\t%s\n" ${BASESUBCMD#$"$BASECMD-"} "${USAGE}"
+	printf "${UBER_BASECMD} %s\t%s\n" ${BASESUBCMD#$"$UBER_BASECMD-"} "${USAGE}"
 }
 
 # ----------------------------------------------------------------------
@@ -28,7 +28,7 @@ function usageTextOfScript() {
 # path to the subcommand script
 # $1 is the subcommand
 function pathToSubcommandScript() {
-	echo "${DIRNAME}/${BASECMD}-$1"
+	echo "${UBER_DIRNAME}/${UBER_BASECMD}-$1"
 }
 
 # ----------------------------------------------------------------------
@@ -38,9 +38,9 @@ function pathToSubcommandScript() {
 # subcommands
 function expandSubcommands() {
 	if [ $# -eq 0 ]; then
-		ls ${DIRNAME}/${BASECMD}-*
+		ls ${UBER_DIRNAME}/${UBER_BASECMD}-*
 	else
-		for SUBCMD in $@; do ls "${DIRNAME}/${BASECMD}-${SUBCMD}"; done | sort
+		for SUBCMD in $@; do ls "${UBER_DIRNAME}/${UBER_BASECMD}-${SUBCMD}"; done | sort
 	fi
 }
 
@@ -50,14 +50,14 @@ function expandSubcommands() {
 # shows usage of all commands.  Otherwise provides usage of the subcommands
 # specified in the list
 function usage() {
-	printf "\n${BASECMD} - ${DESC}\n\nUsage:\n"
+	printf "\n${UBER_BASECMD} - ${UBERCOMMAND_DESC}\n\nUsage:\n"
 	
 	for SUBCMD in $( expandSubcommands $@ ) ; do usageTextOfScript $SUBCMD ; done \
 		| column --table -R 1 -s $'\t' --output-separator "    " \
 		| sed -e 's/^/    /'
 		
 	echo ""
-	echo "Type '${BASECMD} help SUBCOMMAND' for detailed help on any subcommand."
+	echo "Type '${UBER_BASECMD} help SUBCOMMAND' for detailed help on any subcommand."
 	echo ""
 }
 
