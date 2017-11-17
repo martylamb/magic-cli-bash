@@ -5,7 +5,7 @@
 #
 # See https://github.com/martylamb/libUbercommand.sh for more details
 
-UBERCOMMAND_DESC=${UBERCOMMAND_DESC:-FIXME: set a description via the UBERCOMMAND_DESC variable}
+UBERCOMMAND_DESC=${UBERCOMMAND_DESC:-FIXME: set a description via the UBERCOMMAND_DESC variable in your ubercommand script}
 
 # ----------------------------------------------------------------------
 
@@ -14,12 +14,12 @@ UBER_BASECMD=$( basename "$0" )
 
 # ----------------------------------------------------------------------
 
-# extracts usage text from a single subcommand script (not including subcommand)
+# extracts summary text from a single subcommand script
 # $1 is path to script
-function usageTextOfScript() {
+function summaryTextOfScript() {
 	local BASESUBCMD="$( basename $1 )"
-	local USAGE=$( cat "$1" | egrep -i "# *usage: *" | sed -e 's/.*# *usage: *//I' )
-	printf "${UBER_BASECMD} %s\t%s\n" ${BASESUBCMD#$"$UBER_BASECMD-"} "${USAGE}"
+	local SUMMARY=$( cat "$1" | egrep -i "# *summary: *" | sed -e 's/.*# *summary: *//I' )
+	printf "${UBER_BASECMD} %s\t%s\n" ${BASESUBCMD#$"$UBER_BASECMD-"} "${SUMMARY}"
 }
 
 # ----------------------------------------------------------------------
@@ -47,12 +47,12 @@ function expandSubcommands() {
 # ----------------------------------------------------------------------
 
 # provides formatted usage information.  If no arguments are specified,
-# shows usage of all commands.  Otherwise provides usage of the subcommands
+# shows summary of all commands.  Otherwise provides summary of the subcommands
 # specified in the list
 function usage() {
 	printf "\n${UBER_BASECMD} - ${UBERCOMMAND_DESC}\n\nUsage:\n"
 
-	for SUBCMD in $( expandSubcommands $@ ) ; do usageTextOfScript $SUBCMD ; done \
+	for SUBCMD in $( expandSubcommands $@ ) ; do summaryTextOfScript $SUBCMD ; done \
 		| column --table -R 1 -s $'\t' --output-separator "    " \
 		| sed -e 's/^/    /'
 
