@@ -51,11 +51,11 @@ function expandSubcommands() {
 # specified in the list
 function usage() {
 	printf "\n${UBER_BASECMD} - ${UBERCOMMAND_DESC}\n\nUsage:\n"
-	
+
 	for SUBCMD in $( expandSubcommands $@ ) ; do usageTextOfScript $SUBCMD ; done \
 		| column --table -R 1 -s $'\t' --output-separator "    " \
 		| sed -e 's/^/    /'
-		
+
 	echo ""
 	echo "Type '${UBER_BASECMD} help SUBCOMMAND' for detailed help on any subcommand."
 	echo ""
@@ -67,10 +67,11 @@ if [ $# -eq 0 ]; then
 	usage
 else
 	case $1 in
-		help|--help|-h|-\?) 	[ $# -eq 1 ] && usage || $(pathToSubcommandScript "$2") --help
+		help|--help|-h|-\?) 	[ $# -eq 1 ] && usage || UBERCOMMAND="${UBER_BASECMD} ${2}" $(pathToSubcommandScript "$2") --help
 								;;
-								
+
 		*) 						SUBCOMMAND=$(pathToSubcommandScript "$1")
+								export UBERCOMMAND="${UBER_BASECMD} ${1}"
 								shift
 								${SUBCOMMAND} $@
 	esac
